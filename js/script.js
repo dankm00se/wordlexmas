@@ -6,7 +6,16 @@ const delay = 500; // Delay between flipping letters in milliseconds
 let dictionary= [];
 
 const grid = document.getElementById("grid");
+const keyboard = document.getElementById("keyboard");
 const message = document.getElementById("message");
+const gift = document.getElementById("gift");
+
+// Get dictionary of words
+async function getFile(fileURL){
+    let fileContent = await fetch(fileURL);
+    fileContent = await  fileContent.text();
+    return fileContent;
+}
 
 // Initialize the grid
 function initGrid() {
@@ -16,21 +25,35 @@ function initGrid() {
         grid.appendChild(cell);
     }
 }
-// Get dictionary of words
-async function getFile(fileURL){
-    let fileContent = await fetch(fileURL);
-    fileContent = await  fileContent.text();
-    return fileContent;
+//document.getElementById("delete").onclick = handleDelete;
+//document.getElementById("enter").onclick = handleGuess;
+
+
+function handleKeyPress(letter) {
+    if (currentGuess.length < word.length) {
+        currentGuess += letter;
+        updateGrid();
+    }
 }
 
-// Passing file url 
-getFile('../shuffled_real_wordles.txt').then(content =>{
-    // Using split method and passing "\n" as parameter for splitting
-    dictionary =  content.trim().split("\n");
-    console.log(dictionary);
-}).catch(error =>{
-    console.log(error);
+document.querySelectorAll(".key").forEach((button) => {
+    button.addEventListener("click", () => {
+        const letter = button.textContent.trim();
+        if (letter === "Enter") {
+            handleGuess();
+        } else if (letter === "Del") {
+            handleDelete();
+        } else {
+            handleKeyPress(letter);
+        }
+    });
 });
+
+function handleDelete() {
+    currentGuess = currentGuess.slice(0, -1);
+    updateGrid();
+}
+
 
 // Handle a new guess
 function handleGuess() {
@@ -38,8 +61,8 @@ function handleGuess() {
         setMessage("Not enough letters!");
         return;
     }
-    if (!dictionary.includes(currentGuess)){
-        setMessage("Not in word list!");
+    if (!dictionary.includes(currentGuess.toLowerCase())){
+        setMessage(currentGuess + " not in word list!");
         return;
     }
 
@@ -54,6 +77,8 @@ function handleGuess() {
     }
 
     currentGuess = "";
+    updateGrid();
+    updateKeyboard(result);
 }
 
 // Reveal the guess with animations
@@ -63,13 +88,17 @@ function revealGuess(result) {
 
     result.forEach((status, i) => {
         const cell = cells[startIndex + i];
+        const letter = currentGuess[i];
         setTimeout(() => {
-            cell.textContent = currentGuess[i];
+            cell.setAttribute("data-letter", letter);
+            cell.textContent = letter;
             cell.classList.add("flip");
-            cell.addEventListener("animationend", () => {
-                cell.classList.remove("flip");
-                cell.classList.add(status);
-            });
+            
+            // Listen for the `animationend` event
+            cell.addEventListener("animationend", function onFlipEnd() {
+                cell.classList.add(status); // Apply the correct color class
+                cell.removeEventListener("animationend", onFlipEnd); // Remove listener to avoid duplicate calls
+            }); 
         }, i * delay); // Apply delay for each letter
     });
 }
@@ -102,7 +131,36 @@ function testAnimation() {
     currentGuess = "PRVIS";
     handleGuess();
 }
+function updateGrid() {
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach((cell, i) => {
+        const row = Math.floor(i / word.length);
+        const col = i % word.length;
+        cell.textContent = attempts[row]?.[col] || (row === attempts.length ? currentGuess[col] || "" : "");
+        cell.className = "cell";
+        if (attempts[row]) cell.classList.add(checkGuess(attempts[row])[col]);
+    });
+}
+
+function updateKeyboard(result) {
+    const keys = document.querySelectorAll(".key");
+    result.forEach((status, i) => {
+        const key = Array.from(keys).find(k => k.textContent === currentGuess[i]);
+        if (key) key.classList.add(status);
+    });
+}
+
+
+
+// Passing file url 
+getFile('../shuffled_real_wordles.txt').then(content =>{
+    // Using split method and passing "\n" as parameter for splitting
+    dictionary =  content.trim().split("\n");
+    console.log(dictionary);
+}).catch(error =>{
+    console.log(error);
+});
 
 // Initialize the grid and run the test
 initGrid();
-setTimeout(testAnimation, 1000);
+//setTimeout(testAnimation, 1000);

@@ -12,6 +12,7 @@
 
 h1 {
     margin-bottom: 20px;
+    color: #d7dadc;
 }
 
 .grid {
@@ -40,23 +41,87 @@ h1 {
 }
 
 .cell.correct {
-    background-color: #538d4e;
+    background-color: #538d4e; /* Green */
     color: #ffffff;
 }
-
 .cell.present {
-    background-color: #b59f3b;
+    background-color: #b59f3b; /* Yellow */
     color: #ffffff;
 }
-
 .cell.absent {
-    background-color: #3a3a3c;
+    background-color: #3a3a3c; /* Dark Gray */
     color: #ffffff;
+}
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+.keyboard-row {
+    display:flex;
+    justify-content: center;
+    gap: 5px;
+    position:relative;
+}
+.spacer {
+    flex: 1; /* Adds space to center the middle row */
+}
+
+.key {
+    padding: 10px;
+    background-color: #818384;
+    color: #ffffff;
+    border: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 40px;
+    height: 50px;
+    border-radius: 5px;
+    text-align: center;
+}
+.key.special {
+    background-color: #818384;
+    width: auto;
+    padding: 0 20px;
+    font-weight: bold;
+    text-transform: none;
+}
+
+.key:active {
+    transform: scale(0.95);
+    background-color: #666;
+}
+
+.key.correct {
+    background-color: #538d4e;
+}
+.key.present {
+    background-color: #b59f3b;
+}
+.key.absent {
+    background-color: #3a3a3c;
+}
+#message {
+    margin-top: 20px;
+    font-size: 18px;
+}
+#gift {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+}
+#gift img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
 }
 
 @keyframes flip {
     0% {
         transform: rotateX(0deg);
+        background-color: #3a3a3c; /* Neutral color during flip */
     }
     50% {
         transform: rotateX(90deg);
