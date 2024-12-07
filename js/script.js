@@ -38,9 +38,12 @@ function handleGuess() {
         setMessage("Not enough letters!");
         return;
     }
-    if (currentGuess)
+    if (!dictionary.includes(currentGuess)){
+        setMessage("Not in word list!");
+        return;
+    }
 
-    const result = checkGuess(currentGuess);
+    let result = checkGuess(currentGuess);
     attempts.push(currentGuess);
     revealGuess(result);
 
