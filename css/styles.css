@@ -38,6 +38,8 @@ h1 {
 
 .cell.flip {
     animation: flip 0.5s ease-in-out forwards;
+    --cell-color: #3a3a3c;
+    background-color: var(--cell-color);
 }
 
 .cell.correct {
@@ -52,6 +54,17 @@ h1 {
     background-color: #3a3a3c; /* Dark Gray */
     color: #ffffff;
 }
+
+.correct {
+    --cell-color: #538d4e; /* Green */
+}
+.present {
+    --cell-color: #b59f3b; /* Yellow */
+}
+.absent {
+    --cell-color: #3a3a3c; /* Dark Gray */
+}
+
 .keyboard {
     display: flex;
     flex-direction: column;
@@ -104,8 +117,26 @@ h1 {
     background-color: #3a3a3c;
 }
 #message {
-    margin-top: 20px;
-    font-size: 18px;
+    position: absolute; /* Place it above the content */
+    top: 10%; /* Adjust based on where you want it to appear */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust centering */
+    background-color: #ffffff;
+    color: #121213;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #3a3a3c;
+    z-index: 1000; /* Ensure it's above other elements */
+    visibility: hidden; /* Hidden by default */
+    opacity: 0; /* Fully transparent by default */
+    transition: opacity 0.3s ease-in-out; /* Smooth fade-in */
+}
+#message.show {
+    visibility: visible; /* Show the message */
+    opacity: 1; /* Fully opaque */
 }
 #gift {
     display: none;
@@ -125,9 +156,30 @@ h1 {
     }
     50% {
         transform: rotateX(90deg);
-        background-color: #3a3a3c; /* Neutral color during flip */
+        /*background-color: #3a3a3c;  Neutral color during flip */
+    }
+    51%{
+        background-color: var(--cell-color);
     }
     100% {
         transform: rotateX(0deg);
     }
+}
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+}
+
+.row-invalid {
+    animation: shake 0.3s ease-in-out;
 }

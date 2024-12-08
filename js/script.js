@@ -26,10 +26,6 @@ function initGrid() {
         grid.appendChild(cell);
     }
 }
-//document.getElementById("delete").onclick = handleDelete;
-//document.getElementById("enter").onclick = handleGuess;
-
-
 function handleKeyPress(letter) {
     if (currentGuess.length < word.length) {
         currentGuess += letter;
@@ -60,26 +56,37 @@ function handleDelete() {
 function handleGuess() {
     if (currentGuess.length !== word.length) {
         setMessage("Not enough letters!");
+        handleInvalidGuess();
+        setTimeout(() =>{
+            hideMessage();
+        }, 2500);
         return;
     }
     if (!dictionary.includes(currentGuess.toLowerCase())){
         setMessage(currentGuess + " not in word list!");
+        handleInvalidGuess();
+        setTimeout(() =>{
+            hideMessage();
+        }, 2500);
         return;
     }
 
     let result = checkGuess(currentGuess);
     attempts.push(currentGuess);
     revealGuess(result);
-
-    if (result.every((r) => r === "correct")) {
-        setMessage("You guessed it!");
-    } else if (attempts.length === maxGuesses) {
-        setMessage(`The word was ${word}`);
-    }
-
-    currentGuess = "";
-    updateGrid();
+    setTimeout(()=>{
+        
+        if (result.every((r) => r === "correct")) {
+            setMessage("You guessed it!");
+        } else if (attempts.length === maxGuesses) {
+            setMessage(`The word was ${word}`);
+        }
+    }, 2500);
+    
+    
     updateKeyboard(result);
+    currentGuess = "";
+
 }
 
 // Reveal the guess with animations
@@ -90,32 +97,34 @@ function revealGuess(result) {
     result.forEach((status, i) => {
         const cell = cells[startIndex + i];
         const letter = currentGuess[i];
+        
         setTimeout(() => {
-            cell.setAttribute("data-letter", letter);
             cell.textContent = letter;
+            //cell.style.setProperty("--cell-color", color);
             cell.classList.add("flip");
-            
-            // Listen for the `animationend` event
-            cell.addEventListener("animationend", function onFlipEnd() {
-                cell.classList.add(status); // Apply the correct color class
-                cell.removeEventListener("animationend", onFlipEnd); // Remove listener to avoid duplicate calls
-            }); 
+            cell.classList.add(status);
+                       
         }, i * delay); // Apply delay for each letter
     });
 }
-
 // Check the guess
 function checkGuess(guess) {
     const result = Array(word.length).fill("absent");
     const wordLetters = word.split("");
 
+    // First pass: Mark "correct" letters
     guess.split("").forEach((letter, i) => {
         if (word[i] === letter) {
             result[i] = "correct";
-            wordLetters[i] = null;
-        } else if (wordLetters.includes(letter)) {
+            wordLetters[i] = null; // Mark this letter as used
+        }
+    });
+
+    // Second pass: Mark "present" letters
+    guess.split("").forEach((letter, i) => {
+        if (result[i] !== "correct" && wordLetters.includes(letter)) {
             result[i] = "present";
-            wordLetters[wordLetters.indexOf(letter)] = null;
+            wordLetters[wordLetters.indexOf(letter)] = null; // Mark this letter as used
         }
     });
 
@@ -124,16 +133,16 @@ function checkGuess(guess) {
 
 // Set the message
 function setMessage(msg) {
-    message.textContent = msg;
+    const messageBox = document.getElementById("message");
+    messageBox.textContent = msg; // Set the message text
+    messageBox.classList.add("show"); // Show the message
 }
 
-
-
-// Mockup test: Simulate a guess
-function testAnimation() {
-    currentGuess = "PRVIS";
-    handleGuess();
+function hideMessage() {
+    const messageBox = document.getElementById("message");
+    messageBox.classList.remove("show"); // Hide the message
 }
+
 function updateGrid() {
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell, i) => {
@@ -144,13 +153,46 @@ function updateGrid() {
         if (attempts[row]) cell.classList.add(checkGuess(attempts[row])[col]);
     });
 }
-
+//if already correct, don't update
+//if status === present
+//if status === absent
 function updateKeyboard(result) {
     const keys = document.querySelectorAll(".key");
     result.forEach((status, i) => {
         const key = Array.from(keys).find(k => k.textContent === currentGuess[i]);
-        if (key) key.classList.add(status);
+        if (!key) return; // Skip if the key is not found
+
+        // Update the key based on priority (correct > present > absent)
+        if (result[i] === "correct") {
+            key.classList.remove("present", "absent");
+            key.classList.add("correct");
+        } else if (result[i] === "present" && !key.classList.contains("correct")) {
+            key.classList.remove("absent");
+            key.classList.add("present");
+        } else if (
+            result[i] === "absent" &&
+            !key.classList.contains("correct") &&
+            !key.classList.contains("present")
+        ) {
+            key.classList.add("absent");
+        }
     });
+}
+function handleInvalidGuess() {
+    const rowIndex = attempts.length; // Current row (0-indexed)
+    const rowCells = document.querySelectorAll(
+        `.cell:nth-child(n + ${rowIndex * word.length + 1}):nth-child(-n + ${
+            (rowIndex + 1) * word.length
+        })`
+    );
+
+    // Add the shake animation class
+    rowCells.forEach((cell) => cell.classList.add("row-invalid"));
+
+    // Remove the class after the animation ends
+    setTimeout(() => {
+        rowCells.forEach((cell) => cell.classList.remove("row-invalid"));
+    }, 500); // Match animation duration
 }
 
 
@@ -159,25 +201,15 @@ function updateKeyboard(result) {
 getFile('https://dankm00se.github.io/wordlexmas/data/combined_wordlist.txt').then(content =>{
     // Using split method and passing "\n" as parameter for splitting
     dictionary =  content.trim().split("\n");
-    console.log(dictionary);
 }).catch(error =>{
     console.log(error);
 });
- 
-/*
-getFile('data/combined_wordlist.txt').then(content =>{
-    // Using split method and passing "\n" as parameter for splitting
-    dictionary =  content.trim().split("\n");
-    console.log(dictionary);
-});
-*/
 
 initGrid();
-//setTimeout(testAnimation, 1000);
 
 document.addEventListener("keyup", (event) =>{
     let letter = event.key.toUpperCase();
-    console.log("Keyup fired for key : " + letter);
+    //console.log("Keyup fired for key : " + letter);
     if(alphabet.includes(letter)){
         handleKeyPress(letter);
     }
