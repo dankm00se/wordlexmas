@@ -156,13 +156,21 @@ function updateKeyboard(result) {
 
 
 // Passing file url 
-getFile('https://dankm00se.github.io/wordlexmas/data/shuffled_real_wordles.txt').then(content =>{
+getFile('https://dankm00se.github.io/wordlexmas/data/combined_wordlist.txt').then(content =>{
     // Using split method and passing "\n" as parameter for splitting
     dictionary =  content.trim().split("\n");
     console.log(dictionary);
 }).catch(error =>{
     console.log(error);
 });
+ 
+/*
+getFile('data/combined_wordlist.txt').then(content =>{
+    // Using split method and passing "\n" as parameter for splitting
+    dictionary =  content.trim().split("\n");
+    console.log(dictionary);
+});
+*/
 
 initGrid();
 //setTimeout(testAnimation, 1000);
