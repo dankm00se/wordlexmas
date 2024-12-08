@@ -4,6 +4,7 @@ let currentGuess = "";
 let attempts = [];
 const delay = 500; // Delay between flipping letters in milliseconds
 let dictionary= [];
+let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 const grid = document.getElementById("grid");
 const keyboard = document.getElementById("keyboard");
@@ -126,6 +127,8 @@ function setMessage(msg) {
     message.textContent = msg;
 }
 
+
+
 // Mockup test: Simulate a guess
 function testAnimation() {
     currentGuess = "PRVIS";
@@ -153,7 +156,7 @@ function updateKeyboard(result) {
 
 
 // Passing file url 
-getFile('../shuffled_real_wordles.txt').then(content =>{
+getFile('https://dankm00se.github.io/wordlexmas/data/shuffled_real_wordles.txt').then(content =>{
     // Using split method and passing "\n" as parameter for splitting
     dictionary =  content.trim().split("\n");
     console.log(dictionary);
@@ -161,6 +164,20 @@ getFile('../shuffled_real_wordles.txt').then(content =>{
     console.log(error);
 });
 
-// Initialize the grid and run the test
 initGrid();
 //setTimeout(testAnimation, 1000);
+
+document.addEventListener("keyup", (event) =>{
+    let letter = event.key.toUpperCase();
+    console.log("Keyup fired for key : " + letter);
+    if(alphabet.includes(letter)){
+        handleKeyPress(letter);
+    }
+    else if(letter==="ENTER"){
+        handleGuess();
+    }
+    else if(letter==="DELETE" || letter==="BACKSPACE"){
+        handleDelete();
+    }
+    
+});
