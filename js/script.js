@@ -153,9 +153,6 @@ function updateGrid() {
         if (attempts[row]) cell.classList.add(checkGuess(attempts[row])[col]);
     });
 }
-//if already correct, don't update
-//if status === present
-//if status === absent
 function updateKeyboard(result) {
     const keys = document.querySelectorAll(".key");
     result.forEach((status, i) => {
