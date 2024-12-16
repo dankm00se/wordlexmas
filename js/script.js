@@ -36,9 +36,10 @@ function handleKeyPress(letter) {
 document.querySelectorAll(".key").forEach((button) => {
     button.addEventListener("click", () => {
         const letter = button.textContent.trim();
-        if (letter === "Enter") {
+        console.log(letter);
+        if (letter === "ENTER") {
             handleGuess();
-        } else if (letter === "Del") {
+        } else if (letter === "") {
             handleDelete();
         } else {
             handleKeyPress(letter);
