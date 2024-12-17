@@ -39,7 +39,7 @@ document.querySelectorAll(".key").forEach((button) => {
         console.log(letter);
         if (letter === "ENTER") {
             handleGuess();
-        } else if (letter === "") {
+        } else if (letter === "") { //bad way to check what letter it is
             handleDelete();
         } else {
             handleKeyPress(letter);
@@ -75,18 +75,29 @@ function handleGuess() {
     let result = checkGuess(currentGuess);
     attempts.push(currentGuess);
     revealGuess(result);
+    
+    
     setTimeout(()=>{
         
         if (result.every((r) => r === "correct")) {
             setMessage("You guessed it!");
+            setTimeout(()=>{
+                document.getElementById('gift').classList.add("show");
+                document.getElementById('giftmsg').innerText = "Congrats Laila! We're going to PVRIS!";
+            }, 2500);
         } else if (attempts.length === maxGuesses) {
             setMessage(`The word was ${word}`);
+            setTimeout(()=>{
+                document.getElementById('gift').classList.add("show");
+                document.getElementById('giftmsg').innerText = "You lost... but you still won because we're going to PVRIS babyyyyyyyy!";
+            }, 2500);
         }
     }, 2500);
-    
-    
-    updateKeyboard(result);
-    currentGuess = "";
+
+    setTimeout(() =>{
+        updateKeyboard(result);
+        currentGuess = "";
+    }, 2500);
 
 }
 
@@ -159,7 +170,7 @@ function updateKeyboard(result) {
     result.forEach((status, i) => {
         const key = Array.from(keys).find(k => k.textContent === currentGuess[i]);
         if (!key) return; // Skip if the key is not found
-
+        
         // Update the key based on priority (correct > present > absent)
         if (result[i] === "correct") {
             key.classList.remove("present", "absent");

@@ -154,14 +154,27 @@ h1 {
     opacity: 1; /* Fully opaque */
 }
 #gift {
-    display: none;
+    /*display: none;*/
     margin-top: 20px;
     text-align: center;
+    position: absolute;
+    border: 2px solid #3a3a3c;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #121213;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out; /* Smooth fade-in */
+    padding: 10px 20px;
 }
 #gift img {
-    max-width: 100%;
-    height: auto;
+    max-width: 50vw;
+    max-height: 50vw;
     margin: 10px 0;
+}
+#gift.show {
+    visibility: visible;
+    opacity: 1;
 }
 
 @keyframes flip {
