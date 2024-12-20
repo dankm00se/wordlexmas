@@ -10,6 +10,12 @@
     margin: 0;
 }
 
+body #ticketsContainer {
+    justify-self: left;
+    align-self: flex-start;
+    margin-left: 300px;
+}
+
 h1 {
     margin-bottom: 20px;
     color: #d7dadc;
@@ -222,8 +228,7 @@ h1 {
 #ticketsContainer {
     display: flex;
     justify-content: center;
-    position: absolute;
-    gap: 20px;
+    position: relative;
     margin-top: 20px;
     opacity: 0; /* Hidden by default */
     transform: scale(0.8); /* Slightly smaller */
@@ -243,7 +248,12 @@ h1 {
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
     animation: wiggle 1.5s ease-in-out infinite; /* Wiggle animation */
+    position: absolute; /* Allows overlapping */
     
+}
+
+.ticket:nth-child(2) {
+    margin-left: 400px; /* Slight offset for overlap effect */
 }
 
 /* Top Half of Ticket */
