@@ -82,13 +82,13 @@ function handleGuess() {
         if (result.every((r) => r === "correct")) {
             setMessage("You guessed it!");
             setTimeout(()=>{
-                document.getElementById('gift').classList.add("show");
+                document.getElementById('ticketsContainer').classList.add("show");
                 document.getElementById('giftmsg').innerText = "Congrats Laila! We're going to PVRIS!";
             }, 2500);
         } else if (attempts.length === maxGuesses) {
             setMessage(`The word was ${word}`);
             setTimeout(()=>{
-                document.getElementById('gift').classList.add("show");
+                document.getElementById('ticketsContainer').classList.add("show");
                 document.getElementById('giftmsg').innerText = "You lost... but you still won because we're going to PVRIS babyyyyyyyy!";
             }, 2500);
         }
@@ -203,6 +203,19 @@ function handleInvalidGuess() {
         rowCells.forEach((cell) => cell.classList.remove("row-invalid"));
     }, 500); // Match animation duration
 }
+
+function showTickets() {
+    const ticketsContainer = document.getElementById("ticketsContainer");
+    ticketsContainer.classList.add("show"); // Add class to trigger animation
+}
+
+// Simulate the end of the game
+/*
+setTimeout(() => {
+    document.getElementById("winningMessage").textContent = "Congratulations! You guessed the word!";
+    showTickets(); // Show the tickets after the message
+}, 2000);
+*/
 
 
 

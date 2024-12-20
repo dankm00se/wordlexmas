@@ -11,11 +11,40 @@
     <h1>Christmas Wordle</h1>
     
     <div id="message"></div>
+    <!--
     <div id="gift">
         <p id="giftmsg">Congratulations! Here are your tickets:</p>
         <img src="img/show.png" alt="Ticket 1">
         <img src="img/ticket.png" alt="Ticket 2">
     </div>
+    -->
+    
+    <div id="ticketsContainer">
+        <div class="ticket">
+            <div class="ticket-top">
+                <img src="img/ticket.jpg" alt="Band Image 1">
+            </div>
+            <div class="ticket-bottom">
+                <p>Admit One</p>
+                <p>7:30pm</p>
+                <p>Tuesday August 06, 2024</p>
+                <p class="barcode"><b>l ll l lll l  lll llll llllll lll</b></p>
+            </div>
+        </div>
+        <div class="ticket">
+            <div class="ticket-top">
+                <img src="img/ticket.jpg" alt="Band Image 2">
+            </div>
+            <div class="ticket-bottom">
+                <p>Admit One</p>
+                <p>7:30pm</p>
+                <p>Tuesday August 06, 2024</p>
+                <p class="barcode"><b>l ll l lll l  lll llll llllll lll</b></p>
+            </div>
+        </div>
+    </div>
+    
+    
     <div class="grid" id="grid"></div>
     <div class="keyboard">
         <div class="keyboard-row">
@@ -55,6 +84,8 @@
             <button class="key special" id="delete"><img src="img/delete-left-svgrepo-com.svg"></img></button>
         </div>
     </div>
+
+   
     
     <script src="js/script.js"></script>
 </body>

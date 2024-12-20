@@ -216,4 +216,96 @@ h1 {
 @font-face { 
     font-family: nyt-franklin; 
     src: url('../fonts/franklin-normal-600.ttf'); 
-} 
+}
+
+/* Ticket Container */
+#ticketsContainer {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    gap: 20px;
+    margin-top: 20px;
+    opacity: 0; /* Hidden by default */
+    transform: scale(0.8); /* Slightly smaller */
+    transition: opacity 1s ease, transform 0.5s ease; /* Smooth fade and grow */
+    z-index: 1001;
+}
+
+/* Individual Ticket */
+.ticket {
+    width: 240px;
+    height: 320px;
+    background-color: #ffcc00;
+    border-radius: 10px;
+    border: 2px dashed #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    animation: wiggle 1.5s ease-in-out infinite; /* Wiggle animation */
+    
+}
+
+/* Top Half of Ticket */
+.ticket-top {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Ticket Image */
+.ticket-top img {
+    width: 100%;
+    height: 110%;
+    object-fit: fill;
+    border-radius: 5px;
+}
+
+/* Bottom Half of Ticket */
+.ticket-bottom {
+    flex: 0.5;
+    background-color: #004CCC;
+    color: #fff;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-transform: uppercase;
+    text-align: center; /* Center text inside the p elements */
+    line-height: 0.5; /* Adjust spacing between lines */
+}
+
+p.barcode {
+    font-size: 18px;
+    text-transform: lowercase;
+    background-color: black;
+    border: 5px;
+    
+}
+
+/* Wiggle Animation */
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+    75% {
+        transform: rotate(-3deg);
+    }
+}
+
+/* Tickets Appear */
+#ticketsContainer.show {
+    opacity: 1;
+    transform: scale(1); /* Grow to full size */
+}
