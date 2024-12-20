@@ -83,14 +83,16 @@ function handleGuess() {
             setMessage("You guessed it!");
             setTimeout(()=>{
                 document.getElementById('ticketsContainer').classList.add("show");
-                document.getElementById('giftmsg').innerText = "Congrats Laila! We're going to PVRIS!";
             }, 2500);
         } else if (attempts.length === maxGuesses) {
-            setMessage(`The word was ${word}`);
+            //setMessage(`The word was ${word}`);
+            setMessage("Sorry... you're gonna have to play again to find out what your gift is!")
+            /*
             setTimeout(()=>{
                 document.getElementById('ticketsContainer').classList.add("show");
-                document.getElementById('giftmsg').innerText = "You lost... but you still won because we're going to PVRIS babyyyyyyyy!";
             }, 2500);
+            
+             */
         }
     }, 2500);
 

@@ -10,12 +10,6 @@
     margin: 0;
 }
 
-body #ticketsContainer {
-    justify-self: left;
-    align-self: flex-start;
-    margin-left: 300px;
-}
-
 h1 {
     margin-bottom: 20px;
     color: #d7dadc;
