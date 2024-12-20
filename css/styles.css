@@ -218,6 +218,54 @@ h1 {
     src: url('../fonts/franklin-normal-600.ttf'); 
 }
 
+
+
+p.barcode {
+    font-size: 18px;
+    text-transform: lowercase;
+    background-color: black;
+    border: 5px;
+    
+}
+
+/* Wiggle Animation */
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+    75% {
+        transform: rotate(-3deg);
+    }
+}
+
+/* Tickets Appear */
+#ticketsContainer.show {
+    opacity: 1;
+    transform: scale(1) translateX(-80px); /* Grow to full size */
+}
+
+/* Responsive design for mobile screens */
+@media screen and (max-width: 768px) {
+    .ticket {
+        position: relative; /* Stack tickets vertically on smaller screens */
+        transform: none; /* Remove rotation on mobile */
+        margin-left: 0; /* Reset offset */
+        margin-bottom: 20px; /* Add space between tickets */
+    }
+
+    #ticketsContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 /* Ticket Container */
 #ticketsContainer {
     display: flex;
@@ -243,7 +291,7 @@ h1 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
     animation: wiggle 1.5s ease-in-out infinite; /* Wiggle animation */
     position: absolute; /* Allows overlapping */
-    
+
 }
 
 .ticket:nth-child(2) {
@@ -282,34 +330,4 @@ h1 {
     text-transform: uppercase;
     text-align: center; /* Center text inside the p elements */
     line-height: 0.5; /* Adjust spacing between lines */
-}
-
-p.barcode {
-    font-size: 18px;
-    text-transform: lowercase;
-    background-color: black;
-    border: 5px;
-    
-}
-
-/* Wiggle Animation */
-@keyframes wiggle {
-    0%, 100% {
-        transform: rotate(0deg);
-    }
-    25% {
-        transform: rotate(-3deg);
-    }
-    50% {
-        transform: rotate(3deg);
-    }
-    75% {
-        transform: rotate(-3deg);
-    }
-}
-
-/* Tickets Appear */
-#ticketsContainer.show {
-    opacity: 1;
-    transform: scale(1); /* Grow to full size */
 }
